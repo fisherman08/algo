@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+選択そーと
+<div id="result"></div>
+
+<script>
+    (function () {
+
+        const source = [5, 9, 3 ,1, 2, 8, 4, 7, 6];
+
+
+        for(let i = 0, li = source.length; i < li; i++){
+
+            let index_of_min = i;
+            for(let j = i, lj = source.length; j < lj; j++){
+                let number = source[j];
+                if (number < source[index_of_min]) {
+                    index_of_min = j;
+                }
+            }
+            const number_to_move = source[index_of_min];
+            source[index_of_min] = source[i];
+            source[i] = number_to_move;
+
+        }
+
+        console.log(source);
+        document.getElementById("result").innerText = source.toString();
+    })();
+
+
+</script>
+</body>
+</html>

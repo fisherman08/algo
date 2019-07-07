@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+クイックソート
+<div id="result"></div>
+
+<script>
+    (function () {
+
+        const source = [5, 9, 3 ,1, 2, 8, 4, 7, 6];
+        console.log(source);
+
+        function quick_sort(start_index_in, end_index_in) {
+            let left_index = start_index_in;
+            let right_index = end_index_in;
+            let pivot_index = Math.floor((left_index + right_index) / 2);
+
+            const pivot = source[pivot_index];
+            console.log(left_index, right_index, pivot);
+
+            if(left_index >= right_index) {
+                return;
+            }
+
+            while (true) {
+
+
+                while(source[left_index] < pivot) {
+                    left_index++;
+                }
+
+                while(source[right_index] > pivot) {
+                    right_index--;
+                }
+
+                if(left_index >= right_index) {
+                    break;
+                }
+
+                const number_right = source[right_index];
+                const number_left  = source[left_index];
+                source[left_index] = number_right;
+                source[right_index] = number_left;
+                left_index++;
+                right_index--;
+
+
+            }
+            
+            // 左側が残ってる
+            if (start_index_in < left_index -1) {
+                quick_sort(start_index_in, left_index - 1);
+            }
+
+            // 右側が残ってる
+            if (end_index_in > right_index + 1) {
+                quick_sort(right_index + 1, end_index_in);
+            }
+        }
+
+
+        quick_sort(0, source.length -1);
+
+        console.log(source);
+        document.getElementById("result").innerText = source.toString();
+    })();
+
+
+</script>
+</body>
+</html>

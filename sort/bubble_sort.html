@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+バブルソート
+<div id="result"></div>
+
+<script>
+    (function () {
+
+        const source = [5, 9, 3 ,1, 2, 8, 4, 7, 6];
+
+        for(let i = 0, li = source.length; i < li; i++){
+            for(let j = source.length - 1; j > i; j--){
+                if(source[j] < source[j - 1]) {
+                    let number_to_move = source[j];
+                    source[j] = source[j - 1];
+                    source[j - 1] = number_to_move;
+                }
+
+            }
+        }
+
+        console.log(source);
+        document.getElementById("result").innerText = source.toString();
+    })();
+
+
+</script>
+</body>
+</html>
