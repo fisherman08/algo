@@ -47,60 +47,71 @@
         const f = new Peak("F");
         const g = new Peak("G");
         
-        const ab = new Root(a, b, 9)
-        const ac = new Root(a, c, 2)
+        const ab = new Root(a, b, 9);
+        const ac = new Root(a, c, 2);
         
-        const bc = new Root(b, c, 6)
-        const bd = new Root(b, d, 3)
-        const be = new Root(b, e, 1)
+        const bc = new Root(b, c, 6);
+        const bd = new Root(b, d, 3);
+        const be = new Root(b, e, 1);
         
-        const cd = new Root(c, d, 2)
-        const cf = new Root(c, f, 9)
+        const cd = new Root(c, d, 2);
+        const cf = new Root(c, f, 9);
 
-        const de = new Root(d, e, 5)
-        const df = new Root(d, f, 6)
+        const de = new Root(d, e, 5);
+        const df = new Root(d, f, 6);
         
-        const ef = new Root(e, f, 3)
-        const eg = new Root(e, g, 7)
+        const ef = new Root(e, f, 3);
+        const eg = new Root(e, g, 7);
         
-        const fg = new Root(f, g, 4)
+        const fg = new Root(f, g, -1);
         
         const peaks = [a, b, c, d, e, f, g];
-        const roots = [ab, ac, bc, bd, be, cd, cf, de, df, ef, eg, fg];
-        
-        
-        for(var i = 0, li = roots.length; i < li; i++){
-            var root = roots[i];
-            if(!root){
-                continue;
-            }
-            
-            const new_cost_for_right = root.left.cost + root.cost;
-            if (root.right.cost > new_cost_for_right) {
-                root.right.cost = new_cost_for_right
-                root.right.previous_peak = root.left
+        const roots = [ab, fg, ac, bc, bd, be, cd, cf, de, df, ef, eg];
+
+
+        while (true) {
+            let is_peak_updated = false;
+
+            for(let i = 0, li = roots.length; i < li; i++){
+                const root = roots[i];
+                if(!root){
+                    continue;
+                }
+
+                const new_cost_for_right = root.left.cost + root.cost;
+                if (root.right.previous_peak !== root.left && root.right.cost > new_cost_for_right && root.left.previous_peak !== root.right) {
+                    root.right.cost = new_cost_for_right;
+                    root.right.previous_peak = root.left;
+                    is_peak_updated = true;
+                }
+
+                const new_cost_for_left = root.right.cost + root.cost;
+                if (root.left.previous_peak !== root.right && root.left.cost > new_cost_for_left && root.right.previous_peak !== root.left) {
+                    root.left.cost = new_cost_for_left;
+                    root.left.previous_peak = root.right;
+                    is_peak_updated = true;
+                }
+
+
             }
 
-            const new_cost_for_left = root.right.cost + root.cost;
-            if (root.left.cost > new_cost_for_left) {
-                root.left.cost = new_cost_for_left
-                root.left.previous_peak = root.right
+            if(!is_peak_updated) {
+                // どのピークのコストも更新されなくなったらおわり
+                break;
             }
-
 
         }
+
 
         let position = g;
         let path = "";
         while (true) {
             const prev = position.previous_peak;
+            path = position.name + ", " + path;
 
-
-            path = position.name + ", " + path
             if (!prev) {
                 break;
             }
-
 
             position = prev;
         }
