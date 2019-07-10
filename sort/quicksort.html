@@ -11,7 +11,7 @@
 <script>
     (function () {
 
-        const source = [5, 9, 3 ,1, 2, 8, 4, 7, 6];
+        const source = [5, 9, 3, 1, 8, 2, 4, 8, 7, 6];
         console.log(source);
 
         function quick_sort(start_index_in, end_index_in) {
@@ -22,37 +22,37 @@
             const pivot = source[pivot_index];
             console.log(left_index, right_index, pivot);
 
-            if(left_index >= right_index) {
+            if (left_index >= right_index) {
                 return;
             }
 
             while (true) {
 
-
-                while(source[left_index] < pivot) {
+                while (source[left_index] < pivot) {
                     left_index++;
                 }
 
-                while(source[right_index] > pivot) {
+                while (source[right_index] > pivot) {
                     right_index--;
                 }
 
-                if(left_index >= right_index) {
+                if (left_index >= right_index) {
                     break;
                 }
 
                 const number_right = source[right_index];
-                const number_left  = source[left_index];
+                const number_left = source[left_index];
+                console.log(number_left, number_right);
                 source[left_index] = number_right;
                 source[right_index] = number_left;
                 left_index++;
                 right_index--;
-
+                console.log(source);
 
             }
-            
+
             // 左側が残ってる
-            if (start_index_in < left_index -1) {
+            if (start_index_in < left_index - 1) {
                 quick_sort(start_index_in, left_index - 1);
             }
 
@@ -63,7 +63,7 @@
         }
 
 
-        quick_sort(0, source.length -1);
+        quick_sort(0, source.length - 1);
 
         console.log(source);
         document.getElementById("result").innerText = source.toString();

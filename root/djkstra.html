@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+ダイクストラ法
+<div id="result"></div>
+
+<script>
+    (function () {
+
+        class Peak {
+            name;
+            cost = Number.POSITIVE_INFINITY;
+            previous_peak = null;
+            is_reached = false;
+            friends = [];
+
+            constructor(name) {
+                this.name = name;
+            }
+        }
+
+        const a = new Peak("A");
+        a.cost = 0;
+        const b = new Peak("B");
+        const c = new Peak("C");
+        const d = new Peak("D");
+        const e = new Peak("E");
+        const f = new Peak("F");
+        const g = new Peak("G");
+
+        a.friends.push({peak: b, cost: 2});
+        a.friends.push({peak: c, cost: 5});
+
+        b.friends.push({peak: c, cost: 6});
+        b.friends.push({peak: d, cost: 1});
+        b.friends.push({peak: e, cost: 3});
+
+        c.friends.push({peak: b, cost: 6})
+        c.friends.push({peak: f, cost: 8})
+
+        d.friends.push({peak: b, cost: 1})
+        d.friends.push({peak: e, cost: 4})
+
+        e.friends.push({peak: b, cost: 3})
+        e.friends.push({peak: d, cost: 4})
+        e.friends.push({peak: g, cost: 9})
+
+        f.friends.push({peak: c, cost: 8})
+        f.friends.push({peak: g, cost: 7})
+
+
+        const peaks = [a, b, c, d, e, f, g];
+
+        while (true) {
+
+            let current_peak = null;
+
+            for(var i = 0, li = peaks.length; i < li; i++){
+                var peak = peaks[i];
+
+                if(!peak || peak.is_reached){
+                    // もう訪問済みなら虫
+                    continue;
+                }
+
+
+                // 処理中ノードがなければ現在のノードを保持して次へ
+                if(!current_peak) {
+                    current_peak = peak;
+                    continue;
+                }
+
+                // 訪問済み（確定済み）でないノードのうち、一番小さいコストのノードを探す
+                if(peak.cost < current_peak.cost) {
+                    current_peak = peak;
+                }
+            }
+
+            if (!current_peak) {
+                // 全てのピークが確定した
+                break;
+            }
+
+            // 処理中ノードに「訪問済み」のフラグを設定する
+            // （未確定ノードのうち、一番コストが小さい場合はそこにいたるまでの経路が計算された結果なので「確定」できる
+            current_peak.is_reached = true;
+
+
+            // コストのアップデート
+            // 選択されたノードの現在のコストと、
+            // 接続されているエッジのコストを足し、それを接続先のノードに設定されているコストと比較し、
+            // もしそれよりも小さければその値にアップデートする
+            for(var i = 0, li = current_peak.friends.length; i < li; i++){
+                var friend = current_peak.friends[i];
+                if(!friend){
+                    continue;
+                }
+                const peak = friend.peak;
+                const cost = current_peak.cost + friend.cost;
+
+                if (peak.cost > cost) {
+                    peak.cost = cost;
+                    peak.previous_peak = current_peak;
+                }
+            }
+
+        }
+
+        let position = g;
+        let root = "";
+        while (true) {
+            const prev = position.previous_peak;
+            console.log(position);
+
+            root = position.name + ", " + root
+            if (!prev) {
+                break;
+            }
+
+
+            position = prev;
+        }
+
+        document.getElementById("result").innerText = root;
+    })();
+
+
+</script>
+</body>
+</html>

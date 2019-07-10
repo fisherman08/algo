@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+ベルマンフォード法
+<div id="result"></div>
+
+<script>
+    (function () {
+
+        class Peak {
+            name;
+            cost = Number.POSITIVE_INFINITY;
+            previous_peak = null;
+            is_reached = false;
+            roots = [];
+
+            constructor(name) {
+                this.name = name;
+            }
+        }
+        
+        class Root {
+            left;
+            right;
+            cost;
+            
+            constructor(left, right, cost) {
+                this.left = left;
+                this.right = right;
+                this.cost = cost;
+                
+                left.roots.push(this);
+                right.roots.push(this);
+            }
+        }
+
+        const a = new Peak("A");
+        a.cost = 0;
+        const b = new Peak("B");
+        const c = new Peak("C");
+        const d = new Peak("D");
+        const e = new Peak("E");
+        const f = new Peak("F");
+        const g = new Peak("G");
+        
+        const ab = new Root(a, b, 9)
+        const ac = new Root(a, c, 2)
+        
+        const bc = new Root(b, c, 6)
+        const bd = new Root(b, d, 3)
+        const be = new Root(b, e, 1)
+        
+        const cd = new Root(c, d, 2)
+        const cf = new Root(c, f, 9)
+
+        const de = new Root(d, e, 5)
+        const df = new Root(d, f, 6)
+        
+        const ef = new Root(e, f, 3)
+        const eg = new Root(e, g, 7)
+        
+        const fg = new Root(f, g, 4)
+        
+        const peaks = [a, b, c, d, e, f, g];
+        const roots = [ab, ac, bc, bd, be, cd, cf, de, df, ef, eg, fg];
+        
+        
+        for(var i = 0, li = roots.length; i < li; i++){
+            var root = roots[i];
+            if(!root){
+                continue;
+            }
+            
+            const new_cost_for_right = root.left.cost + root.cost;
+            if (root.right.cost > new_cost_for_right) {
+                root.right.cost = new_cost_for_right
+                root.right.previous_peak = root.left
+            }
+
+            const new_cost_for_left = root.right.cost + root.cost;
+            if (root.left.cost > new_cost_for_left) {
+                root.left.cost = new_cost_for_left
+                root.left.previous_peak = root.right
+            }
+
+
+        }
+
+        let position = g;
+        let path = "";
+        while (true) {
+            const prev = position.previous_peak;
+
+
+            path = position.name + ", " + path
+            if (!prev) {
+                break;
+            }
+
+
+            position = prev;
+        }
+
+        console.log(peaks);
+        document.getElementById("result").innerText = path;
+    })();
+
+
+</script>
+</body>
+</html>
