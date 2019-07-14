@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+マージソート
+<div id="result"></div>
+
+<script>
+    (function () {
+
+        const source = [5, 9, 3, 1, 8, 2, 4, 8, 7, 6];
+
+        function merge(left, right) {
+            const result = [];
+            let index_left = 0, index_right = 0;
+
+            // 小さい方を足していく
+            while(index_left < left.length && index_right < right.length) {
+                const value_left = left[index_left], value_right = right[index_right];
+
+                if(value_left < value_right) {
+                    result.push(value_left);
+                    index_left++;
+                } else {
+                    result.push(value_right);
+                    index_right++;
+                }
+
+            }
+
+            // 残りを足す
+            return result.concat(left.slice(index_left).concat(right.slice(index_right)));
+        }
+
+        function mergeSort(items) {
+            if (items.length === 1) {
+                return items;
+            }
+
+            // 分割
+            const point = Math.floor(items.length / 2);
+            const left = items.slice(0, point);
+            const right = items.slice(point);
+
+            return merge(mergeSort(left), mergeSort(right));
+        }
+
+        const result = mergeSort(source);
+        console.log(result);
+        document.getElementById("result").innerText = result.toString();
+    })();
+
+
+</script>
+</body>
+</html>

@@ -60,14 +60,13 @@
             let current_peak = null;
 
             // このループは未確定のpeakの中で最小コストのものを線形探索しているだけ
-            for(var i = 0, li = peaks.length; i < li; i++){
-                var peak = peaks[i];
+            for(let i = 0, li = peaks.length; i < li; i++){
+                const peak = peaks[i];
 
                 if(!peak || peak.is_reached){
                     // もう訪問済みなら虫
                     continue;
                 }
-
 
                 // 処理中ノードがなければ現在のノードを保持して次へ
                 if(!current_peak) {
